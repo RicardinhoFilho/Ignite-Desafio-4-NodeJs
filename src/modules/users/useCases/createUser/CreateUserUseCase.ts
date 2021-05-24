@@ -10,7 +10,16 @@ class CreateUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ email, name }: IRequest): User {
-    // Complete aqui
+
+    if(!email || !name){
+      throw new Error("Dados para cadastro inválidos");
+    }
+
+    if(this.usersRepository.findByEmail(email)){
+      throw new Error("Email já cadastrado!");
+    }
+    const user = this.usersRepository.create({email, name});
+    return user;
   }
 }
 
